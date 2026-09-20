@@ -18,4 +18,4 @@ run = 'test -f white-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=
 run = 'test -f pink-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k pink-noise.mp3'
 
 [tasks.brown]
-run = 'test -f brown-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k brown-noise.mp3'g
+run = 'test -f brown-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k brown-noise.mp3'
