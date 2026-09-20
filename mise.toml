@@ -1,21 +1,21 @@
 [tasks.make]
-description = "Generate all 10-hour noise FLACs (white, pink, brown) in parallel"
+description = "Generate all 10-minute noise MP3s (white, pink, brown) in parallel"
 run = """
 set -e
 pids=""
-test -f white-noise-10h.flac || { ffmpeg -f lavfi -i "anoisesrc=d=36000:c=white:r=44100:a=0.18" -ac 2 -c:a flac -compression_level 0 white-noise-10h.flac & pids="$pids $!"; }
-test -f pink-noise-10h.flac || { ffmpeg -f lavfi -i "anoisesrc=d=36000:c=pink:r=44100:a=0.18" -ac 2 -c:a flac -compression_level 0 pink-noise-10h.flac & pids="$pids $!"; }
-test -f brown-noise-10h.flac || { ffmpeg -f lavfi -i "anoisesrc=d=36000:c=brown:r=44100:a=0.18" -ac 2 -c:a flac -compression_level 0 brown-noise-10h.flac & pids="$pids $!"; }
+test -f white-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k white-noise.mp3 & pids="$pids $!"; }
+test -f pink-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k pink-noise.mp3 & pids="$pids $!"; }
+test -f brown-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k brown-noise.mp3 & pids="$pids $!"; }
 status=0
 for p in $pids; do wait "$p" || status=1; done
 exit $status
 """
 
 [tasks.white]
-run = 'test -f white-noise-10h.flac || ffmpeg -f lavfi -i "anoisesrc=d=36000:c=white:r=44100:a=0.18" -ac 2 -c:a flac -compression_level 0 white-noise-10h.flac'
+run = 'test -f white-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k white-noise.mp3'
 
 [tasks.pink]
-run = 'test -f pink-noise-10h.flac || ffmpeg -f lavfi -i "anoisesrc=d=36000:c=pink:r=44100:a=0.18" -ac 2 -c:a flac -compression_level 0 pink-noise-10h.flac'
+run = 'test -f pink-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k pink-noise.mp3'
 
 [tasks.brown]
-run = 'test -f brown-noise-10h.flac || ffmpeg -f lavfi -i "anoisesrc=d=36000:c=brown:r=44100:a=0.18" -ac 2 -c:a flac -compression_level 0 brown-noise-10h.flac'
+run = 'test -f brown-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k brown-noise.mp3'g
