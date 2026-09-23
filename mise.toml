@@ -3,19 +3,19 @@ description = "Generate all 10-minute noise MP3s (white, pink, brown) in paralle
 run = """
 set -e
 pids=""
-test -f white-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k white-noise.mp3 & pids="$pids $!"; }
-test -f pink-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k pink-noise.mp3 & pids="$pids $!"; }
-test -f brown-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k brown-noise.mp3 & pids="$pids $!"; }
+test -f white-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k -minrate 128k -maxrate 128k -bufsize 128k -write_xing 0 white-noise.mp3 & pids="$pids $!"; }
+test -f pink-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k -minrate 128k -maxrate 128k -bufsize 128k -write_xing 0 pink-noise.mp3 & pids="$pids $!"; }
+test -f brown-noise.mp3 || { ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k -minrate 128k -maxrate 128k -bufsize 128k -write_xing 0 brown-noise.mp3 & pids="$pids $!"; }
 status=0
 for p in $pids; do wait "$p" || status=1; done
 exit $status
 """
 
 [tasks.white]
-run = 'test -f white-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k white-noise.mp3'
+run = 'test -f white-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=white:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k -minrate 128k -maxrate 128k -bufsize 128k -write_xing 0 white-noise.mp3'
 
 [tasks.pink]
-run = 'test -f pink-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k pink-noise.mp3'
+run = 'test -f pink-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=pink:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k -minrate 128k -maxrate 128k -bufsize 128k -write_xing 0 pink-noise.mp3'
 
 [tasks.brown]
-run = 'test -f brown-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k brown-noise.mp3'
+run = 'test -f brown-noise.mp3 || ffmpeg -f lavfi -i "anoisesrc=d=600:c=brown:r=44100:a=0.18" -ac 2 -c:a libmp3lame -b:a 128k -minrate 128k -maxrate 128k -bufsize 128k -write_xing 0 brown-noise.mp3'
